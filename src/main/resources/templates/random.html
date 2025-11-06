@@ -1,12 +1,69 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html
+        lang="ko"
+        xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Thymeleaf</title>
+    <title>노래 추천</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h2>노래 추천</h2>
-    <p>[[${songTitle}]]</p>
+<body class="bg-[#121212] text-white min-h-screen flex flex-col items-center justify-center font-sans">
+<!-- 제목 -->
+<div class="bg-[#1DB954] text-black px-6 py-3 rounded-full mb-6 shadow-lg">
+    <h2 class="text-2xl font-bold tracking-wide">노래 추천 🎧</h2>
+</div>
 
+<!-- 노래가 있을 때 -->
+<div th:object="${song}" th:if="${song} != null"
+     class="bg-[#181818] border border-[#1DB954]/40 rounded-2xl p-6 w-80 shadow-xl hover:scale-105 transition-transform duration-300 text-center">
+    <p class="text-lg mb-3">
+        <span class="text-[#1DB954] font-semibold">제목</span> :
+        <span th:text="*{title}" class="text-gray-200">노래</span>
+    </p>
+    <p class="text-lg mb-6">
+        <span class="text-[#1DB954] font-semibold">가수</span> :
+        <span th:text="*{singer}" class="text-gray-200">이름</span>
+    </p>
+
+    <!-- YouTube 검색 버튼 -->
+    <a th:href="@{'https://www.youtube.com/results?search_query=' + *{singer} + ' ' + *{title}}"
+       target="_blank"
+       class="inline-block bg-[#1DB954] text-black font-semibold px-5 py-2 rounded-full hover:bg-[#1ed760] transition-colors duration-300 shadow-md">
+        🔎 YouTube에서 검색
+    </a>
+
+    <!-- 다른 노래 추천 버튼 -->
+    <a th:href="@{/songs/random}"
+       class="mt-4 w-full block text-center border-2 border-[#1DB954]
+                  text-[#1DB954] py-3 rounded-full
+                  hover:bg-[#1DB954]/10 transition duration-300 shadow-md font-semibold">
+        🎲 다른 노래 추천
+    </a>
+</div>
+
+<!-- 노래가 없을 때 -->
+<div th:unless="${song}"
+     class="bg-[#181818] border border-[#1DB954]/40 rounded-2xl p-10 w-80 shadow-lg text-center mt-10">
+    <p class="text-xl text-[#1DB954] font-semibold mb-3">노래 없음</p>
+    <p class="text-gray-400 mb-6">추천할 노래가 없습니다 😢</p>
+    <a href="https://www.youtube.com/results?search_query=노래방"
+       target="_blank"
+       class="inline-block bg-[#1DB954] text-black font-semibold px-5 py-2 rounded-full hover:bg-[#1ed760] transition-colors duration-300 shadow-md">
+        🎤 YouTube에서 직접 검색
+    </a>
+
+    <!-- 다른 노래 추천 버튼 -->
+    <a th:href="@{/songs/random}"
+       class="mt-4 w-full block text-center border-2 border-[#1DB954]
+                  text-[#1DB954] py-3 rounded-full
+                  hover:bg-[#1DB954]/10 transition duration-300 shadow-md font-semibold">
+        🎲 다른 노래 추천
+    </a>
+</div>
+
+<!-- 푸터 -->
+<footer class="mt-10 text-gray-400 text-sm">
+    <p>Powered by <span class="text-[#1DB954] font-medium">Thymeleaf + Tailwind</span></p>
+</footer>
 </body>
 </html>
